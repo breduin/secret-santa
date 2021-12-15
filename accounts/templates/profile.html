@@ -17,24 +17,29 @@
 </div>
 
 <div class="accordion .accordion-flush" id="user_games">
-  {% for game in games %}
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="heading-{{game.id}}">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{game.id}}" aria-expanded="false" aria-controls="collapse-{{game.id}}">
-        {{game.name}}
-        {% if game.is_admin %}
-          <span class="badge bg-success mx-4">админ</span>
-        {% endif %}
-      </button>
-    </h2>
-    <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent="#user_games">
-      <div class="accordion-body">
-        <p>Организатор: {{game.created_by}}</p>
-        <p>Количество участников: {{game.participants_count}}</p>
+  {% if games %}
+    {% for game in games %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading-{{game.id}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{game.id}}"   aria-expanded="false" aria-controls="collapse-{{game.id}}">
+          {{game.name}}
+          {% if game.is_admin %}
+            <span class="badge bg-success mx-4">админ</span>
+          {% endif %}
+        </button>
+      </h2>
+    <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent=" #user_games">
+        <div class="accordion-body">
+          <p>Организаторы: {{game.admins}}</p>
+          <p>Количество участников: {{game.participants_count}}</p>
+        </div>
       </div>
     </div>
-  </div>
-  {% endfor %}
+    {% endfor %}
+  {% else %}
+    <div>
+      <p>Не найдено ни одной игры, в которой вы принимаете участия :(</p>
+    <div>
+  {% endif %}
 </div>
-
 {% endblock %}

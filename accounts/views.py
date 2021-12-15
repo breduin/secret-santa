@@ -2,26 +2,28 @@ from django.shortcuts import get_object_or_404, render
 from accounts.models import User
 
 
+def serialize_game(game, user):
+    administrators = [f'{administrator.first_name} {administrator.last_name}'
+                      for administrator in game.administrators.all()]
+    return {
+        'name': game.name,
+        'is_admin': user in game.administrators.all(),
+        'admins': ', '.join(administrators),
+        'participants_count': game.participants.count(),
+        'id': game.id,
+    }
+
+
 def profile(request, profile_id):
-    user = get_object_or_404(User, id=profile_id)
-    print(user)
+    user = get_object_or_404(
+        User.objects.prefetch_related('games__administrators'),
+        id=profile_id
+    )
+    
+    games = user.games.all()
     context = {
         'user': user,
-        'games': [
-            {
-                'name': 'Новогодняя вечеринка программистов',
-                'created_by': 'Олег Тарасов',
-                'participants_count': 3,
-                'is_admin': False,
-                'id': 1,
-            },
-            {
-                'name': 'Devman Party',
-                'created_by': 'Юлия Свириденко',
-                'participants_count': 5,
-                'is_admin': True,
-                'id': 2,
-            },
-        ]
+        'games': [serialize_game(game, user) for game in games],
     }
-    return render(request, "profile.html", context)
+
+    return render(request, 'profile.html', context)
