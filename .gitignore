@@ -3,6 +3,8 @@
 *.json
 .vscode/
 *.drawio
+add_test_users.py
+distribute_test_users.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
