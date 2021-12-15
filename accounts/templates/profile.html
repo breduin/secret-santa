@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="card-body">
+      <h4>
+        {{user.first_name}} {{user.last_name}}
+      </h4>
+      {% if user.address %}
+        <small><cite>{{user.address}}</cite></small><br/>
+      {% endif %}
+      <p>{{user.email}}<br/></p>
+    </div>
+  </div>
+</div>
+
+<div class="accordion .accordion-flush" id="user_games">
+  {% for game in games %}
+  <div class="accordion-item">
+    <h2 class="accordion-header" id="heading-{{game.id}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{game.id}}" aria-expanded="false" aria-controls="collapse-{{game.id}}">
+        {{game.name}}
+        {% if game.is_admin %}
+          <span class="badge bg-success mx-4">админ</span>
+        {% endif %}
+      </button>
+    </h2>
+    <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent="#user_games">
+      <div class="accordion-body">
+        <p>Организатор: {{game.created_by}}</p>
+        <p>Количество участников: {{game.participants_count}}</p>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
