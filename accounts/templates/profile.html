@@ -31,7 +31,12 @@
     <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent=" #user_games">
         <div class="accordion-body">
           <p>Организаторы: {{game.admins}}</p>
-          <p>Количество участников: {{game.participants_count}}</p>
+          <p><strong>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</strong></p>
+          <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
+          <br/>
+          <p>Участники ({{game.participants_count}} чел.): {{game.participants}}</p>
+          <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
+          <br/>
         </div>
       </div>
     </div>
