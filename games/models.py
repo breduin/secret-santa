@@ -1,3 +1,100 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
+
+class Game(models.Model):
+    """Игра."""
+    COST_LIMIT_CHOICES = (
+    ('None', 'без ограничений'),
+    ('UPTO500', 'до 500 рублей'),
+    ('500_1000', '500-1000 рублей'),
+    ('1000_2000', '1000-2000 рублей'),
+    )
+
+    name = models.CharField(
+        verbose_name='Название', 
+        max_length=256,
+        help_text='Укажите название игры'
+        )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания',
+        db_index=True,
+        )
+    updated_at = models.DateTimeField(
+        auto_now=True, 
+        verbose_name='Время редактирования',
+        )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.PROTECT,
+        related_name='created_games',
+        editable=False,
+        )
+
+    gift_cost_limit = models.CharField(
+        verbose_name='Стоимость подарка', 
+        max_length=50,
+        choices=COST_LIMIT_CHOICES,
+        default='None',
+        )    
+    registration_deadline = models.DateField(
+        verbose_name='Дата окончания регистрации',
+        )
+    gift_sending_deadline = models.DateField(
+        verbose_name='Отправить подарок до',
+        )        
+    administrators = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='managed_games',
+        blank=True,
+        )        
+    participants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='games',
+        blank=True,
+        )           
+
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = 'Игра'
+        verbose_name_plural = 'Игры'
+
+
+class Pair(models.Model):
+    """Пара игроков, полученная в результате жеребьёвки."""
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания',
+        )    
+    giver = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='givers',
+        db_index=True,
+        )    
+    recipient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='recipients',
+        db_index=True,
+        ) 
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE,
+        related_name='pairs',
+        )        
+    is_gift_sent = models.BooleanField(
+        verbose_name="Подарок отправлен?",
+        default=False,
+        )
+
+    def __str__(self):
+        return f'Пара №{self.id} к игре {self.game}'
+
+    class Meta:
+        verbose_name = 'Пара'
+        verbose_name_plural = 'Пары'
