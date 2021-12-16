@@ -70,7 +70,7 @@
             {% if user.is_authenticated %}
             <a class="nav-link" href="">Личный кабинет</a>
             {% else %}
-            <div><a class="nav-link" href="#">Войти</a></div>
+            <div><a class="nav-link" href="{% url 'login' %}">Войти</a></div>
             {% endif %}
           </li>
         </ul>
@@ -79,7 +79,7 @@
         </div>
         {% if user.is_authenticated %}            
         <div class="d-flex">
-          <a class="nav-link" href="#"><i class="bi bi-box-arrow-right fs-4"></i></a>
+          <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right fs-4"></i></a>
         </div>
         {% endif %}
 
