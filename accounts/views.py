@@ -45,7 +45,7 @@ def profile(request, profile_id):
         'games': [serialize_game(game, user) for game in games],
     }
 
-    return render(request, 'profile.html', context)
+    return render(request, 'accounts/profile.html', context)
 
 
 def game_toss(request, game_id):
