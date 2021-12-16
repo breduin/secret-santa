@@ -53,7 +53,10 @@ class Game(models.Model):
         settings.AUTH_USER_MODEL,
         related_name='games',
         blank=True,
-        )           
+        )
+
+    is_participants_shuffled = models.BooleanField(default=False,
+                                                   verbose_name='Участники перемешаны')
 
     def __str__(self):
         return self.name
