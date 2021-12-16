@@ -43,3 +43,4 @@ def shuffle_game_participants(game_id):
     if save_shuffled_participants(participant_pairs=participant_pairs, game_id=game_id):
         return True
     return False
+
