@@ -67,7 +67,7 @@
           {% endif %}
           <li class="nav-item">
             {% if user.is_authenticated %}
-            <a class="nav-link" href="">Личный кабинет</a>
+            <a class="nav-link" href="{% url 'profile' user.id %}">Личный кабинет</a>
             {% else %}
             <div><a class="nav-link" href="{% url 'login' %}">Войти</a></div>
             {% endif %}

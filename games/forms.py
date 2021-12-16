@@ -50,3 +50,12 @@ class GameCreateForm(forms.ModelForm):
                     }
                     ),    
         }
+
+
+class GameUpdateForm(GameCreateForm):
+
+    class Meta(GameCreateForm.Meta):
+        fields = GameCreateForm.Meta.fields + [
+            'administrators',
+            'participants',
+            ]

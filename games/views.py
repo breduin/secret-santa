@@ -2,9 +2,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 
-from .forms import GameCreateForm
+from .forms import GameCreateForm, GameUpdateForm
 from .models import Game
 
 
@@ -30,8 +30,17 @@ class CreateGameView(LoginRequiredMixin, CreateView):
         game = form.save(commit=False)
         game.created_by = self.request.user
         game.save()
-        return HttpResponseRedirect(self.get_success_url())    
+        return HttpResponseRedirect(self.get_success_url())
     
+
+class UpdateGameView(UpdateView):
+    """Редактировать игру."""
+    model = Game
+    template_name = 'create_update_game.html'
+    form_class = GameUpdateForm   
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=[self.request.user.id])
 
 
 def game_toss(request, game_id):

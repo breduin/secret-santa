@@ -45,8 +45,7 @@
           {% if game.is_admin %}
             <div class="row" id="game_buttons">
               <div class="col">
-                <!-- TODO: Input correct link to edit game form -->
-                <a href="{% url 'profile' 3 %}">Изменить данные игры</a>
+                <a class="btn btn-outline-info" href="{% url 'update_game' game.id %}" role="button">Изменить данные игры</a>                
               </div>
               <div class="col">
                 <a class="btn btn-light float-end" href="{% url 'toss' game.id %}" role="button">Провести жеребьевку</a>
