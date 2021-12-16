@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from accounts.models import User
+from django.http import HttpResponse
 
 
 def serialize_users(users):
@@ -39,3 +40,11 @@ def profile(request, profile_id):
     }
 
     return render(request, 'profile.html', context)
+
+
+def game_toss(request, game_id):
+    # TODO: вызов функции для жеребьевки
+    print(f'Проводим жеребьевку игры {game_id}')
+    # TODO: вызов функции рассылки результатов жеребьевки
+    print(f'Рассылаем результаты жеребьевки игры {game_id}')
+    return HttpResponse(f"Жеребьевка игры {game_id} проведена")

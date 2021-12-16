@@ -37,6 +37,17 @@
           <p>Участники ({{game.participants_count}} чел.): {{game.participants}}</p>
           <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
           <br/>
+          {% if game.is_admin %}
+            <div class="row" id="game_buttons">
+              <div class="col">
+                <!-- TODO: Input correct link to edit game form -->
+                <a href="{% url 'profile' 3 %}">Изменить данные игры</a>
+              </div>
+              <div class="col">
+                <a class="btn btn-light float-end" href="{% url 'toss' game.id %}" role="button">Провести жеребьевку</a>
+              </div>
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>
