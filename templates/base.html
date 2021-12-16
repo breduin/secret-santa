@@ -60,12 +60,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          {% if user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link" href="#">Игра</a>
+            <a class="nav-link" href="{% url 'create_game' %}">Создать игру</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Условия</a>
-          </li>
+          {% endif %}
           <li class="nav-item">
             {% if user.is_authenticated %}
             <a class="nav-link" href="">Личный кабинет</a>

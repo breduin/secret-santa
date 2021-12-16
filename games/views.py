@@ -1,4 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import CreateView
+
+from .forms import GameCreateForm
+from .models import Game
 
 
 class MainPageView(TemplateView):
@@ -8,6 +15,23 @@ class MainPageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class CreateGameView(LoginRequiredMixin, CreateView):
+    """Создать игру."""
+    login_url = reverse_lazy('login')
+    template_name = 'create_update_game.html'
+    form_class = GameCreateForm    
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=[self.request.user.id])
+    
+    def form_valid(self, form):
+        game = form.save(commit=False)
+        game.created_by = self.request.user
+        game.save()
+        return HttpResponseRedirect(self.get_success_url())    
+    
 
 
 def game_toss(request, game_id):

@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block content %}
 <div class="container mt-4">
@@ -13,6 +12,12 @@
       {% endif %}
       <p>{{user.email}}<br/></p>
     </div>
+  </div>
+</div>
+
+<div class='row m-4'>
+  <div class='col'>
+    <a class="btn btn-outline-warning" href="{% url 'create_game' %}" role="button">Создать игру</a>
   </div>
 </div>
 
