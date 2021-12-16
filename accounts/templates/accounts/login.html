@@ -1,0 +1,48 @@
+{% extends 'base_login.html' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block form %}
+<h5>Вход в систему</h5>
+<div class="row">
+    <div class="col s12">
+        {% if form.errors %}
+<p>Имя пользователя и пароль не соответствуют друг другу.</p>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Your account doesn't have access to this page. To proceed,
+    please login with an account that has access.</p>
+    {% else %}
+    <p>Please login to see this page.</p>
+    {% endif %}
+{% endif %}
+<form method="post">
+{% csrf_token %}
+
+        <h1 class="h3 mb-3 fw-normal">Пожалуйста, авторизуйтесь</h1>
+
+    <div class="form-floating">
+      {{ form.username }}
+      {{ form.username.label_tag }}
+    </div>
+    <div class="form-floating">
+      {{ form.password }}
+      {{ form.password.label_tag }}
+    </div>
+
+    <div class="checkbox mb-3">
+      <label>
+        <input type="checkbox" value="remember-me"> запомнить меня
+      </label>
+    </div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" value="Ok">Войти</button>
+
+</form>
+<br>
+
+<p><a href="{% url 'password_reset' %}">Забыли пароль?</a>&nbsp;&nbsp;&nbsp;<a href="{% url 'user_create' %}">Зарегистрироваться</a></p>
+    </div>
+  </div>
+{% endblock %}

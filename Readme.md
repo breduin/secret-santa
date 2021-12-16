@@ -42,6 +42,7 @@ http://127.0.0.1:8000/admin/
 * секретный ключ Django;
 * данные для подключения к БД
 * DEBUG и ALLOWED_HOSTS
+* настройки почтового сервера
 
 
 Вот так должен выглядеть твой .env файл:
@@ -50,6 +51,12 @@ http://127.0.0.1:8000/admin/
     DEBUG=False
     ALLOWED_HOSTS=127.0.0.1,[::1]
     POSTGRES_DB_URL=postgres://user_name:password@host:port/db_name
+    EMAIL_HOST='<smtp-server>'
+    EMAIL_PORT=<port>
+    EMAIL_USE_SSL=True
+    EMAIL_HOST_PASSWORD='<password>'
+    EMAIL_HOST_USER='<login name>'
+    DEFAULT_FROM_EMAIL='<from email>'
     
 
 Указывать эти ключи в файле настроек settings.py не нужно.
