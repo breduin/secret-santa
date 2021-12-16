@@ -1,12 +1,75 @@
+import os
+
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import *
+from django.core.mail import send_mass_mail
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.generic.edit import CreateView, UpdateView
 
 from .forms import GameUserCreateForm, UserLoginForm, UserPasswordResetForm
 from .models import User
+from games.models import Pair
+
+
+def create_letter_text(pair):
+    # TODO: add fields to game
+    # if pair.game.is_online:
+    #     template_filename = 'toss_results_message_template_online.txt'
+    # else:
+    #     template_filename = 'toss_results_message_template_offline.txt'
+    template_filename = 'toss_results_message_template_offline.txt'
+
+    template_path = os.path.join('templates', 'static', 'templates', 'txt', 
+                                 template_filename)
+    with open(template_path, 'r') as file_obj:
+        text_template = file_obj.read()
+
+    wishes = 'Список желаний пуст - положись на свою интуицию!'
+    if pair.recipient.wishlist.exists():
+        wishes = '\n'.join([f'- {wish}' 
+                           for wish in pair.recipient.wishlist.all()])
+        wishes = f'Список желаний:\n{wishes}'
+    santa_letter = 'Похоже получатель не написал письмо Санте :('
+    if pair.recipient.letters_to_santa.exists():
+        santa_letter = (pair.recipient.letters_to_santa
+                        .order_by('-created_at').first())
+    return text_template.format(
+        giver_name=pair.giver.first_name,
+        game_name=pair.game.name,
+        recipient_full_name=f'{pair.recipient.first_name} {pair.recipient.last_name}',
+        deadline=pair.game.gift_sending_deadline,
+        recipient_name=pair.recipient.first_name,
+        recipient_email=pair.recipient.email,
+        santa_letter=santa_letter,
+        whislist=wishes,
+        # TODO: add fields to game
+        party_address='Москва, ул. Возвиженка, д.1',
+    )
+
+
+def send_toss_result(game_id):
+    subject_template = 'Результаты жеребьевки игры "Тайный Санта" - "{game}"'
+    
+    pairs = Pair.objects.filter(game__id=game_id).select_related()
+
+    messages = []
+
+    for pair in pairs:
+        subject = subject_template.format(game=pair.game.name)
+        email_to = pair.giver.email
+        email_text = create_letter_text(pair)
+        print(email_text)
+        messages.append([
+            subject,
+            email_text,
+            None,
+            [email_to],
+        ])
+    
+    send_count = send_mass_mail(tuple(messages), fail_silently=False)
+    print(f'Письма отправлены - {send_count}')
 
 
 def serialize_users(users):
@@ -53,6 +116,7 @@ def game_toss(request, game_id):
     print(f'Проводим жеребьевку игры {game_id}')
     # TODO: вызов функции рассылки результатов жеребьевки
     print(f'Рассылаем результаты жеребьевки игры {game_id}')
+    send_toss_result(game_id)
     return HttpResponse(f"Жеребьевка игры {game_id} проведена")
 
 
