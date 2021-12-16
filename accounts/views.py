@@ -89,7 +89,7 @@ class UserLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
-        return reverse_lazy('user_profile', args=[self.request.user.id])
+        return reverse_lazy('profile', args=[self.request.user.id])
 
 
 class UserLogoutView(LoginRequiredMixin, LogoutView):
@@ -114,7 +114,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return context
     
     def get_success_url(self):
-        reverse_lazy('user_profile', args=[self.request.user.id])
+        reverse_lazy('profile', args=[self.request.user.id])
 
 
 class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
