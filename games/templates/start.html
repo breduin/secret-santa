@@ -17,8 +17,7 @@
         <div class="container">
           <div class="carousel-caption">
             <h1>Праздничная атмосфера.</h1>
-            <p>Для любых сообществ</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Зарегистрироваться</a></p>
+            <p>Для любых сообществ</p>            
           </div>
         </div>
       </div>
@@ -29,7 +28,6 @@
           <div class="carousel-caption">
             <h1>Приятный сюрприз.</h1>
             <p>Ваши друзья рады.</p>
-            <p><button id="get_nearest_warehouse_button_slider" class="btn btn-lg btn-primary" >Начать игру</button></p>
           </div>
         </div>
       </div>
@@ -38,9 +36,8 @@
 
         <div class="container">
           <div class="carousel-caption">
-            <h1>Нужен тимбилдинг?</h1>
+            <h1>Тимбилдинг?</h1>
             <p>У нас есть отличная идея!</p>
-            <p><a class="btn btn-lg btn-primary" href="#">Сделать подарок</a></p>
           </div>
         </div>
       </div>
@@ -61,5 +58,9 @@
 
 
 {% block content %}
-Старт Игры
+{% if user.is_authenticated %}
+<a class="btn btn-danger btn-lg" href="{% url 'create_game' %}" role="button">Начать игру</a>
+{% else %}
+<a class="btn btn-danger btn-lg" href="{% url 'login' %}" role="button">Войти</a>
+{% endif %}
 {% endblock %}

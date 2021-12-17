@@ -1,5 +1,8 @@
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, PasswordResetForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import PasswordResetForm
+from django.utils.html import format_html
 from .models import User
 
 
@@ -25,11 +28,28 @@ class UserLoginForm(AuthenticationForm):
 
 class GameUserCreateForm(UserCreationForm):
     required_css_class = 'fw-bold'
+    consent_to_processing_pd = forms.BooleanField(
+        label=format_html(
+            'Согласие на обработку <a href="{}">персональных данных</a>',
+            'https://raw.githubusercontent.com/Fiskless/where-to-go/main/static/pd_aggreement.jpg'
+        )
+    )        
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['email'].required = True
         self.fields['username'].label = 'Логин'
+
+    def clean_consent_to_processing_pd(self):
+        consent = self.cleaned_data.get('consent_to_processing_pd')
+        if not consent:
+            raise ValidationError(
+                self.error_messages[
+                    'Необходимо согласие на обработку персональных данных.'
+                    ],
+                code='invalid_value',
+            )
+        return consent
 
     class Meta:
         model = User
@@ -73,3 +93,11 @@ class GameUserCreateForm(UserCreationForm):
 
 class UserPasswordResetForm(PasswordResetForm):
     pass
+
+
+class UserUpdateForm(GameUserCreateForm):
+    """
+    Form to update user profile data.
+    """
+    class Meta(GameUserCreateForm.Meta):
+        fields = GameUserCreateForm.Meta.fields + ('wishlist', )
