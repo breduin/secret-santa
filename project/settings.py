@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'santa_letters',
     'randomizer',
     'user_profile',
+    'mailing',
 ]
 
 MIDDLEWARE = [
