@@ -55,18 +55,14 @@
           <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
           {% if game.is_shuffled %}
             <div class="row">
-              <div class="col">
                 <p><strong>Получатель подарка: {{game.recipient}}</strong></p>
-              </div>
-              <div class="col">
-                <a class="btn btn-outline-secondary float-end" href="{% url 'pair_mailing' game.id user.id %}" role="button">Выслать данные получателя на почту </a>
-              </div>
+                <a class="btn btn-outline-secondary btn-sm" href="{% url 'pair_mailing' game.id user.id %}" role="button" style="max-width: 300px;">Выслать данные получателя на почту </a>
             </div>
           {% else %}
             <p><i>Идет регистрация на игру, получатель подарка еще не выбран</i></p>
           {% endif %}
           <br/>
-          <p>Участники ({{game.participants_count}} чел.): {{game.participants}}</p>
+          <p>Участники ({{game.participants_count}} чел.):</p><p>{{game.participants}}</p>
           <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
           <br/>
           {% if game.is_admin %}
