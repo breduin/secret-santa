@@ -24,7 +24,7 @@ class CreateGameView(LoginRequiredMixin, CreateView):
     form_class = GameCreateForm    
 
     def get_success_url(self):
-        return reverse_lazy('profile', args=[self.request.user.id])
+        return reverse_lazy('after_game_creation')
     
     def form_valid(self, form):
         game = form.save(commit=False)
@@ -90,3 +90,8 @@ def get_error_page(request, error_code: int):
         'message': message[error_code],
     }
     return render('error.html', context)
+
+
+class AfterGameCreationView(TemplateView):
+    """Инфо-страницы после создания игры."""
+    template_name = "after_game_creation.html"

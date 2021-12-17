@@ -58,6 +58,9 @@
 
 
 {% block content %}
+<div class='row'>
+<h2>Организуй тайный обмен подарками, запусти праздничное настроение!</h2>
+</div>
 {% if user.is_authenticated %}
 <a class="btn btn-danger btn-lg" href="{% url 'create_game' %}" role="button">Начать игру</a>
 {% else %}
