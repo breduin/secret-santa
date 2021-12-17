@@ -19,6 +19,7 @@ class GameCreateForm(forms.ModelForm):
         model = Game
         fields = [
             'name',
+            'description',
             'gift_cost_limit',
             'registration_deadline',
             'gift_sending_deadline',
@@ -31,20 +32,26 @@ class GameCreateForm(forms.ModelForm):
                     'placeholder': 'название'
                     }
                     ),
+            'description': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': '3',
+                    }
+                    ),                    
             'gift_cost_limit': forms.Select(
                 attrs={
                     'class': 'form-control',
                     }
                     ),                    
             'registration_deadline': forms.DateInput(
-                format='%d-%m-%Y',
+                format='%Y-%m-%d',
                 attrs={
                     'type': 'date',
                     'class': 'form-control',
                     }
                     ),
             'gift_sending_deadline': forms.DateInput(
-                format='%d-%m-%Y',
+                format='%Y-%m-%d',
                 attrs={
                     'type': 'date',
                     'class': 'form-control',
