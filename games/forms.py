@@ -23,7 +23,8 @@ class GameCreateForm(forms.ModelForm):
             'gift_cost_limit',
             'registration_deadline',
             'gift_sending_deadline',
-            'is_creator_participant',         
+            'is_creator_participant',
+            'place',       
             ]
         widgets = {
             'name': forms.TextInput(
@@ -37,7 +38,13 @@ class GameCreateForm(forms.ModelForm):
                     'class': 'form-control',
                     'rows': '3',
                     }
-                    ),                    
+                    ),
+            'place': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Оставьте поле пустым, если игра проводится через email-рассылку'
+                    }
+                    ),                               
             'gift_cost_limit': forms.Select(
                 attrs={
                     'class': 'form-control',

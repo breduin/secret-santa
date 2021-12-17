@@ -21,6 +21,13 @@ class Game(models.Model):
         max_length=256,
         blank=True,
         null=True,
+        )
+    place = models.CharField(
+        verbose_name='Место встречи', 
+        max_length=256,
+        help_text='Оставьте поле пустым, если игра проводится через email-рассылку',
+        blank=True,
+        null=True,        
         )        
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -60,14 +67,12 @@ class Game(models.Model):
         related_name='games',
         blank=True,
         )
-
     is_participants_shuffled = models.BooleanField(default=False,
                                                    verbose_name='Участники перемешаны')
 
     is_creator_participant = models.BooleanField(
         default=True,
         verbose_name='Буду участником?',
-        help_text='Будет ли создатель игры сам принимать в ней участие?',
         )
 
     def __str__(self):
