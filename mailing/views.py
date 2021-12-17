@@ -11,12 +11,10 @@ SUBJECT_TEMPLATE = 'Результаты жеребьевки игры "Тайн
 
 
 def create_letter_text(pair):
-    # TODO: add fields to game
-    # if pair.game.is_online:
-    #     template_filename = 'toss_results_message_template_online.txt'
-    # else:
-    #     template_filename = 'toss_results_message_template_offline.txt'
-    template_filename = 'toss_results_message_template_offline.txt'
+    if not pair.game.place:
+        template_filename = 'toss_results_message_template_online.txt'
+    else:
+        template_filename = 'toss_results_message_template_offline.txt'
 
     template_path = os.path.join('templates', 'static', 'templates', 'txt', 
                                  template_filename)
@@ -41,8 +39,7 @@ def create_letter_text(pair):
         recipient_email=pair.recipient.email,
         santa_letter=santa_letter,
         whislist=wishes,
-        # TODO: add fields to game
-        party_address='Москва, ул. Возвиженка, д.1',
+        party_address=pair.game.place,
     )
 
 
@@ -87,7 +84,7 @@ def mass_mailing(request, game_id):
 def pair_mailing(request, game_id, user_id):
     pair = get_object_or_404(Pair, game__id=game_id, giver__id=user_id)
 
-    send_count = send_mail(
+    send_mail(
         SUBJECT_TEMPLATE.format(game=pair.game.name),
         create_letter_text(pair),
         None,
