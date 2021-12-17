@@ -56,7 +56,7 @@
                 <p><strong>Получатель подарка: {{game.recipient}}</strong></p>
               </div>
               <div class="col">
-                <a class="btn btn-outline-secondary float-end" href="{% url 'update_game' game.id %}" role="button">Выслать данные получателя на почту </a>
+                <a class="btn btn-outline-secondary float-end" href="{% url 'pair_mailing' game.id user.id %}" role="button">Выслать данные получателя на почту </a>
               </div>
             </div>
           {% else %}
