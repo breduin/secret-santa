@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'santa_letters',
     'randomizer',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'games/templates'),
             os.path.join(BASE_DIR, 'accounts/templates'),
+            os.path.join(BASE_DIR, 'user_profile/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

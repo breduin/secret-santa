@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="card mb-3" style="max-width: 540px;">
+    <div class="card-body">
+      <h4>
+        {{user.first_name}} {{user.last_name}}
+      </h4>
+      {% if user.address %}
+        <small><cite>{{user.address}}</cite></small><br/>
+      {% endif %}
+      <p>{{user.email}}<br/></p>
+    </div>
+  </div>
+</div>
+
+<div class='row m-4'>
+  <div class='col'>
+    <a class="btn btn-outline-warning" href="{% url 'create_game' %}" role="button">Создать игру</a>
+  </div>
+</div>
+
+<div class="accordion .accordion-flush" id="user_games">
+  {% if games %}
+    {% for game in games %}
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="heading-{{game.id}}">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{game.id}}"   aria-expanded="false" aria-controls="collapse-{{game.id}}">
+          {{game.name}}
+          {% if game.is_admin %}
+            <span class="badge bg-success mx-4">админ</span>
+          {% endif %}
+        </button>
+      </h2>
+    <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent=" #user_games">
+        <div class="accordion-body">
+          <p>Организаторы: {{game.admins}}</p>
+          <p><strong>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</strong></p>
+          <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
+          <br/>
+          <p>Участники ({{game.participants_count}} чел.): {{game.participants}}</p>
+          <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
+          <br/>
+          {% if game.is_admin %}
+            <div class="row" id="game_buttons">
+              <div class="col">
+                <a class="btn btn-outline-info" href="{% url 'update_game' game.id %}" role="button">Изменить данные игры</a>                
+              </div>
+              <div class="col">
+                <a class="btn btn-light float-end" href="{% url 'toss' game.id %}" role="button">Провести жеребьевку</a>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div>
+      <p>Не найдено ни одной игры, в которой вы принимаете участия :(</p>
+    <div>
+  {% endif %}
+</div>
+{% endblock %}
