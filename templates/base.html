@@ -52,7 +52,7 @@
   <body>
     
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-gradient" style="background-color: #9e2d00;">
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-gradient">
     <div class="container-fluid">
       <a class="navbar-brand" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Новогодняя игра Секретный Санта" href="{% url 'main_page' %}">Секретный Санта</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,7 @@
         </div>
         {% if user.is_authenticated %}            
         <div class="d-flex">
-          <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right mx-4" style="font-size: 2rem; color: ghostwhite;"></i></a>
+          <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-box-arrow-right mx-4" id="logout"></i></a>
         </div>
         {% endif %}
 
@@ -119,7 +119,7 @@
 <div class='row mt-5'>
 </div>
   <!-- FOOTER -->
-  <footer class="fixed-bottom bg-gradient p-1" style="background-color: #4f6328; color: #ffffff">
+  <footer class="fixed-bottom bg-gradient p-1" id='footer'>
     <p>Новогодняя игра "Секретный Санта"</p>
     <p>+7(495) 123-45-67</p>
   </footer>
