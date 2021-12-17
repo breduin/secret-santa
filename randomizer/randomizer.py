@@ -36,11 +36,18 @@ def save_shuffled_participants(participant_pairs, game_id):
 def shuffle_game_participants(game_id):
     participants = get_game_participants(game_id=game_id)
     if not participants or len(participants) < 3:
-        raise IndexError("Can't shuffle. Participants always shuffled"
-                         " or no game participants"
-                         " or number of participants < 3")
+        return False
     participant_pairs = get_shuffle_participant_pairs(participants)
     if save_shuffled_participants(participant_pairs=participant_pairs, game_id=game_id):
         return True
     return False
+
+
+def delete_shuffled_participants(game_id):
+    try:
+        Pair.objects.filter(game_id=game_id).delete()
+        Game.objects.filter(pk=game_id).update(is_participants_shuffled=False)
+        return True
+    except TypeError:
+        return False
 
