@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'games',
     'debug_toolbar',
     'santa_letters',
+    'randomizer',
 ]
 
 MIDDLEWARE = [

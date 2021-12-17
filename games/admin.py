@@ -2,8 +2,6 @@ from django.contrib import admin
 from .models import Game, Pair
 
 
-admin.site.register(Pair)
-
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = ['name',
@@ -16,3 +14,11 @@ class GameAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.created_by = request.user
         super().save_model(request, obj, form, change)
+
+
+class PairAdmin(admin.ModelAdmin):
+    list_filter = ['game', 'giver']
+    list_display = ['id', 'game', 'giver']
+
+
+admin.site.register(Pair, PairAdmin)
