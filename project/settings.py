@@ -59,6 +59,7 @@ TEMPLATES = [
             os.path.join(BASE_DIR, 'games/templates'),
             os.path.join(BASE_DIR, 'accounts/templates'),
             os.path.join(BASE_DIR, 'user_profile/templates'),
+            os.path.join(BASE_DIR, 'santa_letters/templates'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {

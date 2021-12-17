@@ -4,6 +4,7 @@ from django.urls import path, include
 from . import settings
 
 urlpatterns = [
+    path('letters-to-santa/', include('santa_letters.urls')),
     path('admin/', admin.site.urls),
     path('', include('games.urls')),
     path('', include('accounts.urls')),
