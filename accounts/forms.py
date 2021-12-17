@@ -93,3 +93,11 @@ class GameUserCreateForm(UserCreationForm):
 
 class UserPasswordResetForm(PasswordResetForm):
     pass
+
+
+class UserUpdateForm(GameUserCreateForm):
+    """
+    Form to update user profile data.
+    """
+    class Meta(GameUserCreateForm.Meta):
+        fields = GameUserCreateForm.Meta.fields + ('wishlist', )

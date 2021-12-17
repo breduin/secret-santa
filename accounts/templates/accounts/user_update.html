@@ -1,0 +1,26 @@
+{% extends 'base_login.html' %}
+
+{% block title %}Редактирование регистрационных данных{% endblock %}
+
+{% block form %}
+{{ form.media }}
+<form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+
+  {% for field in form %}
+            <div class="col-12">
+              {{ field.label_tag }}
+              {{ field }}
+
+              {% if field.errors %}
+              <div class="invalid-feedback" style="display: inherit;">
+              {{ field.errors }}
+              </div>
+              {% endif %}
+            </div>
+  {% endfor %}
+
+    </br>
+<button class="w-100 btn btn-primary btn-lg" type="submit">Сохранить</button>
+</form>
+{% endblock %}

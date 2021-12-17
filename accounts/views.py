@@ -1,9 +1,13 @@
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import *
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import UpdateView
 
-from .forms import GameUserCreateForm, UserLoginForm, UserPasswordResetForm
+from .forms import GameUserCreateForm
+from .forms import UserLoginForm
+from .forms import UserPasswordResetForm
+from .forms import UserUpdateForm
 from .models import User
 
 
@@ -55,17 +59,11 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     """
     login_url = reverse_lazy('login')
     model = User
+    form_class = UserUpdateForm
     template_name = 'accounts/user_update.html'
-    context_object_name = 'user'
-    fields = ['last_name', 'first_name', 'email']
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['user'] = self.request.user
-        return context
     
     def get_success_url(self):
-        reverse_lazy('profile', args=[self.request.user.id])
+        return reverse_lazy('profile', args=[self.request.user.id])
 
 
 class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
