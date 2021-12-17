@@ -18,7 +18,7 @@ class GameAdmin(admin.ModelAdmin):
 
 class PairAdmin(admin.ModelAdmin):
     list_filter = ['game', 'giver']
-    list_display = ['id', 'game', 'giver']
+    list_display = ['id', 'game', 'giver', 'recipient']
 
 
 admin.site.register(Pair, PairAdmin)

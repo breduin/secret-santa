@@ -4,6 +4,8 @@ from django.core.mail import send_mass_mail, send_mail
 from games.models import Pair
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 SUBJECT_TEMPLATE = 'Результаты жеребьевки игры "Тайный Санта" - "{game}"'
 
@@ -91,14 +93,6 @@ def pair_mailing(request, game_id, user_id):
         None,
         [pair.giver.email],
     )
+    print('Send mail to pair.giver.email')
     
-    if send_count == 1:
-        mailing_result_message = (f'''
-            Участнику {pair.giver.username} игры {game_id} отправлена 
-            информация о получателе {pair.recipient.username}
-            ''')
-    else:
-        mailing_result_message = ('Не удалось выполнить рассылку писем '
-                                  f'участникам игры {game_id} выполнена')
-
-    return HttpResponse(f'{mailing_result_message}')
+    return HttpResponseRedirect(reverse('profile', args=(user_id,)))
