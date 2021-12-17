@@ -56,7 +56,7 @@ def send_toss_result(game_id):
         subject = SUBJECT_TEMPLATE.format(game=pair.game.name)
         email_to = pair.giver.email
         email_text = create_letter_text(pair)
-        print(email_text)
+
         messages.append([
             subject,
             email_text,
