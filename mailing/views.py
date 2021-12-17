@@ -93,6 +93,5 @@ def pair_mailing(request, game_id, user_id):
         None,
         [pair.giver.email],
     )
-    print('Send mail to pair.giver.email')
     
     return HttpResponseRedirect(reverse('profile', args=(user_id,)))
