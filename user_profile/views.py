@@ -3,6 +3,8 @@ from games.models import Pair
 from randomizer.randomizer import shuffle_game_participants
 from accounts.models import User
 from django.http import HttpResponse
+from games.models import Game
+from django.db.models import Q
 
 
 def serialize_users(users):
@@ -11,9 +13,18 @@ def serialize_users(users):
 
 
 def serialize_game(game, user):
+    if game.pairs.filter(giver=user).exists():
+        recipient = game.pairs.get(giver=user).recipient
+        recipient_name = (f'{recipient.first_name} {recipient.last_name} '
+                          f'({recipient.username})')
+    else:
+        recipient_name = None
+        
     return {
         'name': game.name,
+        'is_creator': user == game.created_by,
         'is_admin': user in game.administrators.all(),
+        'is_participant': user in game.participants.all(),
         'admins': serialize_users(game.administrators.all()),
         'participants_count': game.participants.count(),
         'id': game.id,
@@ -22,23 +33,26 @@ def serialize_game(game, user):
         'registration_deadline': game.registration_deadline,
         'gift_sending_deadline': game.gift_sending_deadline,
         'participants': serialize_users(game.participants.all()),
+        'is_shuffled': game.is_participants_shuffled,
+        'recipient': recipient_name,
     }
          
 
 def profile(request, profile_id):
-    user = get_object_or_404(
-        (
-            User.objects
-            .prefetch_related('games__administrators')
-            .prefetch_related('games__participants')
-        ),
-        id=profile_id
+    user = get_object_or_404(User, id=profile_id)
+    
+    user_games = (
+        Game.objects
+        .filter(Q(created_by=user) | Q(administrators=user) | Q(participants=user))
+        .distinct()
+        .prefetch_related('participants')  
+        .prefetch_related('administrators') 
+        .select_related('created_by')
     )
     
-    games = user.games.all()
     context = {
         'user': user,
-        'games': [serialize_game(game, user) for game in games],
+        'games': [serialize_game(game, user) for game in user_games],
     }
 
     return render(request, 'user_profile/profile.html', context)
