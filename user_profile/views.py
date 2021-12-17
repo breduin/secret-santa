@@ -36,6 +36,8 @@ def serialize_game(game, user):
         'is_shuffled': game.is_participants_shuffled,
         'recipient': recipient_name,
         'description': game.description,
+        'place': game.place,
+        'is_online': not game.place,
     }
          
 
@@ -74,5 +76,4 @@ def game_toss(request, game_id):
         pairs_info = ''
 
     return HttpResponse(f'{shuffle_result_message} {pairs_info}')
-
 

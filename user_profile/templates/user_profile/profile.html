@@ -52,14 +52,22 @@
           {% endif %}
           <p>Организаторы: {{game.admins}}</p>
           <p>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</p>
-          <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
-          {% if game.is_shuffled %}
-            <div class="row">
-                <p><strong>Получатель подарка: {{game.recipient}}</strong></p>
-                <a class="btn btn-outline-secondary btn-sm" href="{% url 'pair_mailing' game.id user.id %}" role="button" style="max-width: 300px;">Выслать данные получателя на почту </a>
-            </div>
+          {% if game.is_online %}
+            <p>Формат встречи: <strong>онлайн</strong></p>
+            <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
           {% else %}
-            <p><i>Идет регистрация на игру, получатель подарка еще не выбран</i></p>
+            <p>Место встречи: <strong>{{game.place}}</strong></p>
+            <p>Дата и время встречи: <strong>{{game.gift_sending_deadline|date:"d.m.Y"}} в {{game.gift_sending_deadline|time:"H:i"}}</strong></p>
+          {% endif %}
+          {% if game.is_participant %}
+            {% if game.is_shuffled %}
+              <div class="row">
+                  <p><strong>Получатель подарка: {{game.recipient}}</strong></p>
+                  <a class="btn btn-outline-secondary btn-sm" href="{% url 'pair_mailing' game.id user.id %}" role="button" style="max-width: 300px;">Выслать данные получателя на почту </a>
+              </div>
+            {% else %}
+              <p><i>Идет регистрация на игру, получатель подарка еще не выбран</i></p>
+            {% endif %}
           {% endif %}
           <br/>
           <p>Участники ({{game.participants_count}} чел.):</p><p>{{game.participants}}</p>
