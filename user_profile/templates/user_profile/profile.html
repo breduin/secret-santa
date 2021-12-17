@@ -1,23 +1,29 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container mt-4">
-  <div class="card mb-3" style="max-width: 540px;">
-    <div class="card-body">
-      <h4>
-        {{user.first_name}} {{user.last_name}}
-      </h4>
-      {% if user.address %}
-        <small><cite>{{user.address}}</cite></small><br/>
-      {% endif %}
-      <p>{{user.email}}<br/></p>
+  <div class="row my-4">
+    <div class="col">
+      <div class="card mb-3" style="max-width: 540px;">
+        <div class="card-body">
+          <h4>
+            {{user.first_name}} {{user.last_name}}
+          </h4>
+          {% if user.address %}
+            <small><cite>{{user.address}}</cite></small><br/>
+          {% endif %}
+          <p>{{user.email}}<br/></p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-
-<div class='row m-4'>
-  <div class='col'>
-    <a class="btn btn-outline-warning" href="{% url 'create_game' %}" role="button">Создать игру</a>
+    <div class="col">
+      <div class="row my-2">
+        <a class="btn btn-outline-success" href="{% url 'create_game' %}" role="button" style="max-width: 300px;">Создать игру</a>
+      </div>
+      <div class="row my-2">
+        <a class="btn btn-outline-secondary" href="{% url 'user_update' user.id %}" role="button" style="max-width: 300px;">Изменить данные пользователя</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -28,24 +34,43 @@
       <h2 class="accordion-header" id="heading-{{game.id}}">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{game.id}}"   aria-expanded="false" aria-controls="collapse-{{game.id}}">
           {{game.name}}
+          {% if game.is_creator %}
+            <span class="badge bg-warning mx-2">создатель</span>
+          {% endif %}
           {% if game.is_admin %}
-            <span class="badge bg-success mx-4">админ</span>
+            <span class="badge bg-success mx-2">админ</span>
+          {% endif %}
+          {% if game.is_participant %}
+            <span class="badge bg-light text-dark mx-2">участник</span>
           {% endif %}
         </button>
       </h2>
     <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent=" #user_games">
         <div class="accordion-body">
           <p>Организаторы: {{game.admins}}</p>
-          <p><strong>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</strong></p>
+          <p>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</p>
           <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
+          {% if game.is_shuffled %}
+            <div class="row">
+              <div class="col">
+                <p><strong>Получатель подарка: {{game.recipient}}</strong></p>
+              </div>
+              <div class="col">
+                <a class="btn btn-outline-secondary float-end" href="{% url 'update_game' game.id %}" role="button">Выслать данные получателя на почту </a>
+              </div>
+            </div>
+          {% else %}
+            <p><i>Идет регистрация на игру, получатель подарка еще не выбран</i></p>
+          {% endif %}
           <br/>
           <p>Участники ({{game.participants_count}} чел.): {{game.participants}}</p>
           <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
           <br/>
           {% if game.is_admin %}
+            <br/>
             <div class="row" id="game_buttons">
               <div class="col">
-                <a class="btn btn-outline-info" href="{% url 'update_game' game.id %}" role="button">Изменить данные игры</a>                
+                <a class="btn btn-outline-secondary" href="{% url 'update_game' game.id %}" role="button">Изменить данные игры</a>                
               </div>
               <div class="col">
                 <a class="btn btn-light float-end mx-4" href="{% url 'toss' game.id %}" role="button">Провести жеребьевку</a>
