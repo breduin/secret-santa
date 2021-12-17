@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .forms import GameUserCreateForm, UserLoginForm, UserPasswordResetForm
 from .models import User
 from games.models import Pair
+from randomizer.randomizer import shuffle_game_participants
 
 
 def create_letter_text(pair):
@@ -113,11 +114,32 @@ def profile(request, profile_id):
 
 def game_toss(request, game_id):
     # TODO: вызов функции для жеребьевки
-    print(f'Проводим жеребьевку игры {game_id}')
-    # TODO: вызов функции рассылки результатов жеребьевки
-    print(f'Рассылаем результаты жеребьевки игры {game_id}')
-    send_toss_result(game_id)
-    return HttpResponse(f"Жеребьевка игры {game_id} проведена")
+    shuffle_result = shuffle_game_participants(game_id)
+    if shuffle_result:
+        shuffle_result_message = f'Жеребьевка игры {game_id} проведена успешно' 
+        pairs = Pair.objects.filter(game__id=game_id)
+        pairs_info = '\n'.join([
+            f'{pair.giver.username} - {pair.recipient.username}' 
+            for pair in pairs
+        ])
+    else:
+        shuffle_result_message = f'Жеребьевку игры {game_id} провести не удалось'
+        pairs_info = ''
+
+    mailing_result = False
+    # send_toss_result(game_id)
+    if mailing_result:
+        mailing_result_message = f'Рассылка писем участникам игры {game_id} выполнена' 
+    else:
+        mailing_result_message = ('Не удалось выполнить рассылку писем '
+                                  f'участникам игры {game_id} выполнена')
+
+    return HttpResponse(f'''\
+        {shuffle_result_message}
+
+        {pairs_info}
+
+        {mailing_result_message}''')
 
 
 class UserCreateView(CreateView):
