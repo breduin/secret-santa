@@ -16,6 +16,12 @@ class Game(models.Model):
         max_length=256,
         help_text='Укажите название игры'
         )
+    description = models.TextField(
+        verbose_name='Описание', 
+        max_length=256,
+        blank=True,
+        null=True,
+        )        
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name='Время создания',
@@ -57,6 +63,12 @@ class Game(models.Model):
 
     is_participants_shuffled = models.BooleanField(default=False,
                                                    verbose_name='Участники перемешаны')
+
+    is_creator_participant = models.BooleanField(
+        default=True,
+        verbose_name='Буду участником?',
+        help_text='Будет ли создатель игры сам принимать в ней участие?',
+        )
 
     def __str__(self):
         return self.name

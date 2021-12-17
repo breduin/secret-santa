@@ -21,7 +21,8 @@ class GameCreateForm(forms.ModelForm):
             'name',
             'gift_cost_limit',
             'registration_deadline',
-            'gift_sending_deadline',            
+            'gift_sending_deadline',
+            'is_creator_participant',         
             ]
         widgets = {
             'name': forms.TextInput(

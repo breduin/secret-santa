@@ -28,8 +28,13 @@ class CreateGameView(LoginRequiredMixin, CreateView):
     
     def form_valid(self, form):
         game = form.save(commit=False)
-        game.created_by = self.request.user
+        user = self.request.user
+        game.created_by = user
         game.save()
+        if game.is_creator_participant:
+            game.participants.add(user)
+            game.administrators.add(user)
+            game.save()
         return HttpResponseRedirect(self.get_success_url())
     
 
