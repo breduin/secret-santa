@@ -20,14 +20,12 @@ class Game(models.Model):
         verbose_name='Описание', 
         max_length=256,
         blank=True,
-        null=True,
         )
     place = models.CharField(
         verbose_name='Место встречи', 
         max_length=256,
         help_text='Оставьте поле пустым, если игра проводится через email-рассылку',
-        blank=True,
-        null=True,        
+        blank=True,      
         )        
     created_at = models.DateTimeField(
         auto_now_add=True,
