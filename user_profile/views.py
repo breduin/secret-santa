@@ -19,7 +19,7 @@ def serialize_game(game, user):
                           f'({recipient.username})')
     else:
         recipient_name = None
-        
+
     return {
         'name': game.name,
         'is_creator': user == game.created_by,
@@ -35,6 +35,7 @@ def serialize_game(game, user):
         'participants': serialize_users(game.participants.all()),
         'is_shuffled': game.is_participants_shuffled,
         'recipient': recipient_name,
+        'description': game.description,
     }
          
 

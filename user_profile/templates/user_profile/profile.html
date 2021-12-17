@@ -47,6 +47,9 @@
       </h2>
     <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent=" #user_games">
         <div class="accordion-body">
+          {% if game.description %}
+            <p>{{game.description}}</p>
+          {% endif %}
           <p>Организаторы: {{game.admins}}</p>
           <p>Дата окончания регистрации: {{game.registration_deadline|date:"d.m.Y" }}</p>
           <p><strong>Отправить подарок до: {{game.gift_sending_deadline|date:"d.m.Y" }}</strong></p>
