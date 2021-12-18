@@ -38,7 +38,7 @@ class CreateGameView(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(self.get_success_url())
     
 
-class UpdateGameView(UpdateView):
+class UpdateGameView(LoginRequiredMixin, UpdateView):
     """Редактировать игру."""
     model = Game
     template_name = 'create_update_game.html'
@@ -68,6 +68,7 @@ class UpdateGameView(UpdateView):
             game.participants.remove(user)
             game.administrators.remove(user)
         game.save()
+        form.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
 
 

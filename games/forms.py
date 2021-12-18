@@ -3,6 +3,7 @@ from datetime import timedelta
 from django import forms
 from django.utils import timezone
 
+from accounts.models import User
 from .models import Game
 
 
@@ -26,7 +27,7 @@ class GameCreateForm(forms.ModelForm):
             'gift_sending_deadline',
             'is_creator_participant',
             'is_online',
-            'place',       
+            'place',
             ]
         widgets = {
             'name': forms.TextInput(
@@ -45,17 +46,17 @@ class GameCreateForm(forms.ModelForm):
                 attrs={
                     'class': 'form-control',                    
                     }
-                    ),                               
+                    ),
             'gift_cost_limit': forms.Select(
                 attrs={
                     'class': 'form-control',
                     }
-                    ),       
+                    ),
             'your_gift_cost_limit': forms.NumberInput(
                 attrs={
                     'class': 'form-control',
                     }
-                    ),                                    
+                    ),
             'registration_deadline': forms.DateInput(
                 format='%Y-%m-%d',
                 attrs={
@@ -69,7 +70,7 @@ class GameCreateForm(forms.ModelForm):
                     'type': 'date',
                     'class': 'form-control',
                     }
-                    ),    
+                    ),
             'is_creator_participant': forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
@@ -79,14 +80,34 @@ class GameCreateForm(forms.ModelForm):
                 attrs={
                     'class': 'form-check-input',
                     }
-                    ),                                     
+                    ),
         }
 
 
 class GameUpdateForm(GameCreateForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['participants'].queryset = User.objects.all().order_by('username')
+        self.fields['administrators'].queryset = User.objects.all().order_by('username')
 
     class Meta(GameCreateForm.Meta):
         fields = GameCreateForm.Meta.fields + [
             'administrators',
             'participants',
             ]
+        widgets = GameCreateForm.Meta.widgets.copy()
+        widgets.update({
+            'participants': forms.SelectMultiple(
+                attrs={
+                    'size': 5,
+                    'class': 'form-select',
+                    }
+                    ),
+            'administrators': forms.SelectMultiple(
+                attrs={
+                    'size': 5,
+                    'class': 'form-select',
+                    }
+                    ),                       
+        })
