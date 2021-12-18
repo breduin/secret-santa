@@ -22,7 +22,7 @@
       </div>
       <div class="row my-2">
         <a class="btn btn-outline-danger" href="{% url 'write_letter_to_santa' user.id %}" role="button" style="max-width: 300px;">Написать письмо Санте</a>
-      </div>      
+      </div>       
       <div class="row my-2">
         <a class="btn btn-outline-secondary" href="{% url 'user_update' user.id %}" role="button" style="max-width: 300px;">Изменить данные пользователя</a>
       </div>
@@ -73,6 +73,9 @@
             {% endif %}
           {% endif %}
           <br/>
+          <div class="row my-2">
+            <a class="btn btn-outline-warning" href="{% url 'wishlist' game.id %}" role="button" style="max-width: 300px;">Лист пожеланий</a>
+          </div>   
           <p>Участники ({{game.participants_count}} чел.):</p><p>{{game.participants}}</p>
           <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
           <br/>

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load form_control %}
+
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-outline-success">Сохранить</button>
+</form>
+
+{% endblock %}

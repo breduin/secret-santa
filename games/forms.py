@@ -5,6 +5,7 @@ from django.utils import timezone
 
 from accounts.models import User
 from .models import Game
+from .models import WishList
 
 
 class GameCreateForm(forms.ModelForm):
@@ -112,3 +113,19 @@ class GameUpdateForm(GameCreateForm):
                     }
                     ),                       
         })
+
+class WishListCreateForm(forms.ModelForm):
+
+    class Meta:
+        model = WishList
+        fields = [
+            'items',
+            ]
+        widgets = {
+            'items': forms.SelectMultiple(
+                attrs={
+                    'size': 15,
+                    'class': 'form-select',
+                    }
+                    ),              
+        }

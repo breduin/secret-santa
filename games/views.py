@@ -1,11 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 
-from .forms import GameCreateForm, GameUpdateForm
+from .forms import GameCreateForm
+from .forms import GameUpdateForm
+from .forms import WishListCreateForm
 from .models import Game
+from .models import WishList
 
 
 class MainPageView(TemplateView):
@@ -96,3 +100,30 @@ def get_error_page(request, error_code: int):
 class AfterGameCreationView(TemplateView):
     """Инфо-страницы после создания игры."""
     template_name = "after_game_creation.html"
+
+
+class CreateUpdateWishListView(LoginRequiredMixin, UpdateView):
+    """Создать список желаний."""
+    login_url = reverse_lazy('login')
+    template_name = 'wishlist.html'
+    form_class = WishListCreateForm
+
+    def get_object(self):        
+        user = self.request.user
+        try:
+            game_id = self.kwargs['game_id']
+        except KeyError:
+            raise Http404("Нет идентификатора игры.")
+        try:
+            game = Game.objects.get(id=game_id)
+        except queryset.model.DoesNotExist:
+            raise Http404("Игра не найдена.")                          
+
+        obj, _ = WishList.objects.get_or_create(
+            user=user,
+            game=game
+            )         
+        return obj
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=[self.request.user.id])

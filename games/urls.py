@@ -5,6 +5,7 @@ from .views import CreateGameView
 from .views import UpdateGameView
 from .views import get_error_page
 from .views import AfterGameCreationView
+from .views import CreateUpdateWishListView
 
 
 urlpatterns = [
@@ -13,4 +14,5 @@ urlpatterns = [
     path('update-game/<int:pk>', UpdateGameView.as_view(), name='update_game'),
     path('error/<int:error_code>', get_error_page, name='error'),
     path('after-game-creation/', AfterGameCreationView.as_view(), name='after_game_creation'),
+    path('wishlist/<int:game_id>', CreateUpdateWishListView.as_view(), name='wishlist'),
 ]
