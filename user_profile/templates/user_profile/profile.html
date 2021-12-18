@@ -21,6 +21,9 @@
         <a class="btn btn-outline-success" href="{% url 'create_game' %}" role="button" style="max-width: 300px;">Создать игру</a>
       </div>
       <div class="row my-2">
+        <a class="btn btn-outline-danger" href="{% url 'write_letter_to_santa' user.id %}" role="button" style="max-width: 300px;">Написать письмо Санте</a>
+      </div>      
+      <div class="row my-2">
         <a class="btn btn-outline-secondary" href="{% url 'user_update' user.id %}" role="button" style="max-width: 300px;">Изменить данные пользователя</a>
       </div>
     </div>
