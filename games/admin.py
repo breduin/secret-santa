@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Pair
+from .models import Game, Pair, WishList
 
 
 @admin.register(Game)
@@ -22,3 +22,5 @@ class PairAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Pair, PairAdmin)
+
+admin.site.register(WishList)

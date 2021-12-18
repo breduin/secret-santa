@@ -5,7 +5,7 @@ from .models import User, WishListItem
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
-        (None, {'fields': ('address', 'wishlist',)}),
+        (None, {'fields': ('address', )}),
     )
 
 

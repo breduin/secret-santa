@@ -22,10 +22,10 @@ def create_letter_text(pair):
         text_template = file_obj.read()
 
     wishes = 'Список желаний пуст - положись на свою интуицию!'
-    if pair.recipient.wishlist.exists():
-        wishes = '\n'.join([f'- {wish}' 
-                           for wish in pair.recipient.wishlist.all()])
-        wishes = f'Список желаний:\n{wishes}'
+    # if pair.recipient.wishlist.exists():
+    #     wishes = '\n'.join([f'- {wish}' 
+    #                        for wish in pair.recipient.wishlist.all()])
+    #     wishes = f'Список желаний:\n{wishes}'
     santa_letter = 'Похоже получатель не написал письмо Санте :('
     if pair.recipient.letters_to_santa.exists():
         santa_letter = (pair.recipient.letters_to_santa

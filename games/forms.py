@@ -79,6 +79,7 @@ class GameCreateForm(forms.ModelForm):
             'is_online': forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
+                    'role': 'switch',
                     }
                     ),
         }

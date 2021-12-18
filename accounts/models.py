@@ -22,12 +22,7 @@ class User(AbstractUser):
     address = models.CharField('Почтовый адрес', 
                                 max_length=512, 
                                 blank=True,
-                                null=True,
                                 )
-    wishlist = models.ManyToManyField(WishListItem, 
-                                      verbose_name='Пожелания к подарку',
-                                      blank=True,
-                                      )
 
     class Meta:
         verbose_name = 'Пользователь'

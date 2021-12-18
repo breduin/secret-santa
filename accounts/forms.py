@@ -29,11 +29,11 @@ class UserLoginForm(AuthenticationForm):
 class GameUserCreateForm(UserCreationForm):
     required_css_class = 'fw-bold'
     consent_to_processing_pd = forms.BooleanField(
-        label=format_html(
-            'Согласие на обработку <a href="{}">персональных данных</a>',
-            'https://raw.githubusercontent.com/Fiskless/where-to-go/main/static/pd_aggreement.jpg'
-        )
-    )        
+        label="""Я даю согласие на обработку своих персональных данных 
+                 соответствии с требованиями Федерального закона 
+                 №152-ФЗ от 27.07.2006.
+        """
+        ) 
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -87,7 +87,12 @@ class GameUserCreateForm(UserCreationForm):
                     'class': 'form-control',
                     'placeholder': 'Фамилия'
                     }
-                    ),                                       
+                    ),
+            'consent_to_processing_pd': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                    }
+                    ),                                                 
         }
 
 
@@ -100,4 +105,4 @@ class UserUpdateForm(GameUserCreateForm):
     Form to update user profile data.
     """
     class Meta(GameUserCreateForm.Meta):
-        fields = GameUserCreateForm.Meta.fields + ('wishlist', )
+        fields = GameUserCreateForm.Meta.fields

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from accounts.models import WishListItem
 
 
 class Game(models.Model):
@@ -125,3 +126,35 @@ class Pair(models.Model):
     class Meta:
         verbose_name = 'Пара'
         verbose_name_plural = 'Пары'
+
+
+class WishList(models.Model):
+    """Лист пожеланий игрока к подарку в данной игре."""
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания',
+        )    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='wishlists',
+        db_index=True,
+        ) 
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE,
+        related_name='user_wishlist',
+        )
+    items = models.ManyToManyField(
+        WishListItem,
+        verbose_name='Пожелания к подарку',
+        blank=True,
+        )
+
+    def __str__(self):
+        return f'Лист желаний {self.user} к игре {self.game}'
+
+    class Meta:
+        verbose_name = 'Лист желаний'
+        verbose_name_plural = 'Листы желаний'
+        unique_together = ('user', 'game')
