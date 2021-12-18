@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 
 {% block content %}
@@ -10,47 +11,5 @@
 
 
 {% block jsfiles %}
-<script>
-/* Скрипт скрывает/показывает поля в форме создания/редактирования игры
-*/
-window.addEventListener("load", () => {            
-
-   
-    let costsLimitField = document.getElementById("id_place");
-     
-    function setDisplayIEFields(param) {
-        if (param == 'none') {
-            /* Устанавливается display: none; для родителя исключаемого поля, 
-            т.е. для p-обёртки */
-            costsLimitField.parentNode.style.setProperty(
-                    "display", "none", "important");
-        }                    
-        else
-        {
-            costsLimitField.parentNode.style.removeProperty(
-                    "display"
-                    );
-        }
-        }
-
-    let costsChoiceField = document.getElementById("id_gift_cost_limit");
-    let currentValue = costsChoiceField.value;
-    if (currentValue == 'None') {
-        setDisplayIEFields('none');
-    }
-
-    costsChoiceField.addEventListener("change", (event) => {                
-        choiceValue = event.target.value;
-
-        if (choiceValue == 'None' ) {                                       
-            setDisplayIEFields('none');
-        }
-        else {
-            setDisplayIEFields('block');
-        }
-    });
-
-});
-
-</script>
+<script src="{% static 'games/js/control_game_fields_display.js' %}"></script>
 {% endblock %}

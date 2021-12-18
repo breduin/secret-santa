@@ -21,9 +21,11 @@ class GameCreateForm(forms.ModelForm):
             'name',
             'description',
             'gift_cost_limit',
+            'your_gift_cost_limit',
             'registration_deadline',
             'gift_sending_deadline',
             'is_creator_participant',
+            'is_online',
             'place',       
             ]
         widgets = {
@@ -41,15 +43,19 @@ class GameCreateForm(forms.ModelForm):
                     ),
             'place': forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Оставьте поле пустым, если игра проводится через email-рассылку'
+                    'class': 'form-control',                    
                     }
                     ),                               
             'gift_cost_limit': forms.Select(
                 attrs={
                     'class': 'form-control',
                     }
-                    ),                    
+                    ),       
+            'your_gift_cost_limit': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    }
+                    ),                                    
             'registration_deadline': forms.DateInput(
                 format='%Y-%m-%d',
                 attrs={
@@ -64,6 +70,16 @@ class GameCreateForm(forms.ModelForm):
                     'class': 'form-control',
                     }
                     ),    
+            'is_creator_participant': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                    }
+                    ),
+            'is_online': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                    }
+                    ),                                     
         }
 
 
