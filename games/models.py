@@ -185,7 +185,7 @@ class ElidiblePair(models.Model):
         )
 
     def __str__(self):
-        return f'Пара-исключение к игре {self.game}: {self.user_1} - {self_user_2}'
+        return f'Пара-исключение к игре {self.game}: {self.user_1} - {self.user_2}'
 
     class Meta:
         verbose_name = 'Пара-исключение'

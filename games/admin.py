@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Game, Pair, WishList
+from .models import Game
+from .models import Pair
+from .models import WishList
+from .models import ElidiblePair
 
 
 @admin.register(Game)
@@ -24,3 +27,5 @@ class PairAdmin(admin.ModelAdmin):
 admin.site.register(Pair, PairAdmin)
 
 admin.site.register(WishList)
+
+admin.site.register(ElidiblePair)

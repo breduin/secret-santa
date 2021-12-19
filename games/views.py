@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from .forms import GameCreateForm
 from .forms import GameUpdateForm
 from .forms import WishListCreateForm
+from .forms import ElidiblePairCreateForm
 from .models import Game
 from .models import WishList
 
@@ -127,3 +128,43 @@ class CreateUpdateWishListView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('profile', args=[self.request.user.id])
+
+
+class ElidiblePairCreateView(LoginRequiredMixin, CreateView):
+    """Создать список желаний."""
+    login_url = reverse_lazy('login')
+    template_name = 'elidible_pair.html'
+    form_class = ElidiblePairCreateForm
+
+    def get_form_kwargs(self):
+        """Return the keyword arguments for instantiating the form."""
+        kwargs = super().get_form_kwargs()
+        try:
+            game_id = self.kwargs['game_id']
+        except KeyError:
+            raise Http404("Нет идентификатора игры.")
+        try:
+            game = Game.objects.get(id=game_id)
+        except queryset.model.DoesNotExist:
+            raise Http404("Игра не найдена.")  
+        kwargs['game_id'] = game_id
+        return kwargs    
+
+    def get_success_url(self):
+        return reverse_lazy('profile', args=[self.request.user.id])
+
+    def form_valid(self, form):
+        pair = form.save(commit=False)
+
+        try:
+            game_id = self.kwargs['game_id']
+        except KeyError:
+            raise Http404("Нет идентификатора игры.")
+        try:
+            game = Game.objects.get(id=game_id)
+        except queryset.model.DoesNotExist:
+            raise Http404("Игра не найдена.")  
+
+        pair.game = game
+        pair.save()
+        return HttpResponseRedirect(self.get_success_url())        

@@ -86,6 +86,9 @@
                 <a class="btn btn-outline-secondary" href="{% url 'update_game' game.id %}" role="button">Изменить данные игры</a>                
               </div>
               <div class="col">
+                <a class="btn btn-outline-secondary" href="{% url 'create_elidible_pair' game.id %}" role="button">Добавить пару-исключение</a>
+              </div>
+              <div class="col">
                 <a class="btn btn-light float-end mx-4" href="{% url 'toss' game.id %}" role="button">Провести жеребьевку</a>
                 <a class="btn btn-light float-end mx-4" href="{% url 'mass_mailing' game.id %}" role="button">Разослать письма</a>
               </div>

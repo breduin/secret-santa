@@ -1,6 +1,7 @@
 import random
 
 from games.models import Game, Pair
+from games.models import ElidiblePair
 from accounts.models import User
 
 def get_game_participants(game_id):
@@ -11,22 +12,16 @@ def get_game_participants(game_id):
     return participants
 
 
-def get_pairs_with_exclusions(participants_id, game_id):
+def get_pairs_with_exclusions(participants_id, game_id, excl_pairs):
     """Получить пары участников с учётом пар-исключений."""
     participants = participants_id
 
-    # excl_pairs = ExclusionPair.objects.filter(game__id=game_id)
-    user_1 = User.objects.get(id=participants_id[0])
-    user_2 = User.objects.get(id=participants_id[-1])
-    excl_pairs = [[user_1, user_2]]
-    print('Исключаемая пара', excl_pairs)
-
     excl_users_pair = []
     for pair in excl_pairs:
-        id_1 = pair[0].id
+        id_1 = pair.user_1.id
         participants.remove(id_1)
 
-        id_2 = pair[1].id
+        id_2 = pair.user_2.id
         participants.remove(id_2)
 
         excl_users_pair.append([id_1, id_2])
@@ -39,7 +34,6 @@ def get_pairs_with_exclusions(participants_id, game_id):
         excl_users_allocated += pair
 
     participants_allocated = participants + excl_users_allocated
-    print('Allocated users', participants_allocated)
     pairs = []
     for participant in range(len(participants_allocated)):
         pairs.append(
@@ -75,10 +69,9 @@ def shuffle_game_participants(game_id):
     if not participants or len(participants) < 3:
         return False
 
-    # проверить наличие пар-исключений
-    are_exclusions = True
-    if are_exclusions:
-        participant_pairs = get_pairs_with_exclusions(participants, game_id)
+    excl_pairs = ElidiblePair.objects.filter(game__id=game_id)
+    if excl_pairs.count() > 0:
+        participant_pairs = get_pairs_with_exclusions(participants, game_id, excl_pairs)
     else:    
         participant_pairs = get_shuffle_participant_pairs(participants)
 

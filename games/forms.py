@@ -1,11 +1,13 @@
 from datetime import timedelta
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from accounts.models import User
 from .models import Game
 from .models import WishList
+from .models import ElidiblePair
 
 
 class GameCreateForm(forms.ModelForm):
@@ -128,4 +130,42 @@ class WishListCreateForm(forms.ModelForm):
                     'class': 'form-select',
                     }
                     ),              
+        }
+
+class ElidiblePairCreateForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        game_id = kwargs.pop('game_id')
+        super().__init__(*args, **kwargs)
+        self.fields['user_1'].queryset = User.objects.filter(
+            games__id=game_id
+            ).order_by('username')
+        self.fields['user_2'].queryset = User.objects.filter(
+            games__id=game_id
+            ).order_by('username')
+
+    def clean_user_2(self):
+        user_2 = self.cleaned_data.get('user_2')
+        user_1 = self.cleaned_data.get('user_1')
+        if user_2 == user_1:
+            raise ValidationError('В паре-исключении должны быть разные люди.')
+        return user_2
+
+    class Meta:
+        model = ElidiblePair
+        fields = [
+            'user_1',
+            'user_2',            
+            ]
+        widgets = {
+            'user_1': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                    }
+                    ),
+            'user_2': forms.Select(
+                attrs={
+                    'class': 'form-select',
+                    }
+                    ),
         }
