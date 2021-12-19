@@ -158,3 +158,36 @@ class WishList(models.Model):
         verbose_name = 'Лист желаний'
         verbose_name_plural = 'Листы желаний'
         unique_together = ('user', 'game')
+
+
+class ElidiblePair(models.Model):
+    """Пара-исключение в игре."""
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Время создания',
+        )    
+    user_1 = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='+',
+        db_index=True,
+        ) 
+    user_2 = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='+',
+        db_index=True,
+        )       
+    game = models.ForeignKey(
+        Game,
+        on_delete=models.CASCADE,
+        related_name='elidible_pairs',
+        )
+
+    def __str__(self):
+        return f'Пара-исключение к игре {self.game}: {self.user_1} - {self_user_2}'
+
+    class Meta:
+        verbose_name = 'Пара-исключение'
+        verbose_name_plural = 'Пары-исключения'
+
