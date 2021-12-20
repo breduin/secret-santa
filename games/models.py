@@ -166,17 +166,17 @@ class ElidiblePair(models.Model):
         auto_now_add=True,
         verbose_name='Время создания',
         )    
-    user_1 = models.OneToOneField(
+    user_1 = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='+',
-        db_index=True,
+        verbose_name='Участник 1',
         ) 
-    user_2 = models.OneToOneField(
+    user_2 = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='+',
-        db_index=True,
+        verbose_name='Участник 2',
         )       
     game = models.ForeignKey(
         Game,
@@ -190,4 +190,8 @@ class ElidiblePair(models.Model):
     class Meta:
         verbose_name = 'Пара-исключение'
         verbose_name_plural = 'Пары-исключения'
+        unique_together = [
+            ['user_1', 'game'],
+            ['user_2', 'game'],
+            ]
 
