@@ -13,15 +13,6 @@ def serialize_users(users):
     return ', '.join(user_names)
 
 
-def serialize_pairs(pairs):
-    pair_strings = [
-        (f'{pair.user_1.first_name} {pair.user_1.last_name} + '
-            f'{pair.user_2.first_name} {pair.user_2.last_name}')
-        for pair in pairs
-    ]
-    return ', '.join(pair_strings)
-
-
 def serialize_game(game, user):
     if game.pairs.filter(giver=user).exists():
         recipient = game.pairs.get(giver=user).recipient
@@ -29,15 +20,6 @@ def serialize_game(game, user):
                           f'({recipient.username})')
     else:
         recipient_name = None
-    
-    if game.gift_cost_limit == 'YOUR':
-        cost_limit = f'{game.your_gift_cost_limit} руб.'
-    else:
-        cost_limit = game.get_gift_cost_limit_display()
-
-    extra_pairs = 'не заданы'
-    if game.elidible_pairs.exists():
-        extra_pairs = serialize_pairs(game.elidible_pairs.all())
 
     return {
         'name': game.name,
@@ -48,7 +30,7 @@ def serialize_game(game, user):
         'participants_count': game.participants.count(),
         'id': game.id,
         'created_at': game.created_at,
-        'gift_cost_limit': cost_limit,
+        'gift_cost_limit': game.get_gift_cost_limit_display(),
         'registration_deadline': game.registration_deadline,
         'gift_sending_deadline': game.gift_sending_deadline,
         'participants': serialize_users(game.participants.all()),
@@ -57,12 +39,12 @@ def serialize_game(game, user):
         'description': game.description,
         'place': game.place,
         'is_online': game.is_online,
-        'extra_pairs': extra_pairs,
     }
          
 
 def profile(request, profile_id):
     user = get_object_or_404(User, id=profile_id)
+    host_addr = request._current_scheme_host
     
     user_games = (
         Game.objects
@@ -85,9 +67,8 @@ def profile(request, profile_id):
     context = {
         'user': user,
         'last_games': [serialize_game(game, user) for game in last_games],
-        'current_games': [serialize_game(game, user) for game in current_games],    
-        # TODO: вставить ссылку для регистрации участников на игру
-        'register_link': 'http://что-то там'     
+        'current_games': [serialize_game(game, user) for game in current_games],
+        'host_addr': host_addr
     }
 
     return render(request, 'user_profile/profile.html', context)

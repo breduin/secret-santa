@@ -9,6 +9,7 @@ from .forms import UserLoginForm
 from .forms import UserPasswordResetForm
 from .forms import UserUpdateForm
 from .models import User
+from games.models import Game
 
 
 class UserCreateView(CreateView):
@@ -24,8 +25,12 @@ class UserCreateView(CreateView):
     def form_valid(self, form):
         """If the form is valid, save the associated model."""
         self.object = form.save()
-
         # TODO здесь привязка пользователя к игре, если есть ссылка
+        if self.request.session['assigned_game_id']:
+            game_id = self.request.session.pop('assigned_game_id')
+            game = Game.objects.get(pk=game_id)
+            game.participants.add(self.object.pk)
+            game.save()
         # TODO здесь проверка соглашения об обработке ПД
 
         return super().form_valid(form)
@@ -44,6 +49,13 @@ class UserLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
+        try:
+            game_id = self.request.session.pop('assigned_game_id')
+            game = Game.objects.get(pk=game_id)
+            game.participants.add(self.request.user.pk)
+            game.save()
+        except KeyError:
+            pass
         return reverse_lazy('profile', args=[self.request.user.id])
 
 
