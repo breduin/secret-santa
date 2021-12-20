@@ -15,8 +15,9 @@ def get_game_participants(game_id):
 def get_pairs_with_exclusions(participants_id, game_id, excl_pairs):
     """Получить пары участников с учётом пар-исключений."""
     participants = participants_id
+    random.shuffle(participants)
 
-    excl_users_pair = []
+    excl_users_pairs = []
     for pair in excl_pairs:
         id_1 = pair.user_1.id
         participants.remove(id_1)
@@ -24,10 +25,10 @@ def get_pairs_with_exclusions(participants_id, game_id, excl_pairs):
         id_2 = pair.user_2.id
         participants.remove(id_2)
 
-        excl_users_pair.append([id_1, id_2])
+        excl_users_pairs.append([id_1, id_2])
 
     excl_users_allocated = []
-    for pair in excl_users_pair:
+    for pair in excl_users_pairs:
         random_user = random.choice(participants)
         participants.remove(random_user)
         pair.insert(1, random_user)
@@ -66,11 +67,17 @@ def save_shuffled_participants(participant_pairs, game_id):
 
 def shuffle_game_participants(game_id):
     participants = get_game_participants(game_id=game_id)
-    if not participants or len(participants) < 3:
+    num_of_participants = len(participants)
+    if not participants or num_of_participants < 3:
         return False
 
     excl_pairs = ElidiblePair.objects.filter(game__id=game_id)
-    if excl_pairs.count() > 0:
+    if (num_of_excl_pairs := excl_pairs.count()) > 0:
+        print(num_of_excl_pairs, num_of_participants)
+        if num_of_excl_pairs == 1 and num_of_participants < 3 * num_of_excl_pairs + 1:
+            return False
+        elif num_of_excl_pairs  > 1 and num_of_participants < 3 * num_of_excl_pairs:
+            return False
         participant_pairs = get_pairs_with_exclusions(participants, game_id, excl_pairs)
     else:    
         participant_pairs = get_shuffle_participant_pairs(participants)

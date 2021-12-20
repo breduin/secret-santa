@@ -23,8 +23,13 @@ class User(AbstractUser):
                                 max_length=512, 
                                 blank=True,
                                 )
+    def __str__(self):
+        if (fname := self.first_name) and (lname := self.last_name):
+            return '{} {} ({})'.format(fname, lname, self.username)
+        return self.username
 
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
 
