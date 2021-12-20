@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.list import ListView
+
 
 from accounts.views import UserLoginView
 from .forms import GameCreateForm
@@ -186,4 +188,15 @@ class ElidiblePairCreateView(LoginRequiredMixin, CreateView):
 
         pair.game = game
         pair.save()
-        return HttpResponseRedirect(self.get_success_url())        
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class WishListListView(ListView):
+
+    model = WishList
+    paginate_by = 100
+    template_name = 'wishlists.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context

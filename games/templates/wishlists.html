@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class='container'>
+    
+{% for wishlist in object_list %}
+    <div class='row'>
+        {{ wishlist.user }}: {{ for item in wishlist.items.all }}{{ item }} {{ endfor }}
+    {% empty %}
+        <li>Вишлистов пока нет.</li>
+    </div>
+{% endfor %}
+
+</div>
+{% endblock %}
