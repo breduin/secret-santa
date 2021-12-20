@@ -31,8 +31,8 @@
 </div>
 
 <div class="form-check form-switch my-4">
-  <input class="form-check-input" type="checkbox" checked id="chbox_last_games" >
-  <label class="form-check-label" for="flexSwitchCheckChecked">Показать прошедшие игры</label>
+  <input class="form-check-input" type="checkbox" id="chbox_last_games" >
+  <label class="form-check-label" for="flexSwitchCheckDefault">Показать прошедшие игры</label>
 </div>
 
 <!-- Current games -->
@@ -112,7 +112,7 @@
 </div>    
 
 <!-- Last games -->
-<div class="accordion .accordion-flush" id="show_last_games">
+<div class="accordion .accordion-flush" id="show_last_games" style="display: none;">
   {% if last_games %}
     {% for game in last_games %}
       <div class="accordion-item">
