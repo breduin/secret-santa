@@ -30,7 +30,7 @@ class UserCreateView(CreateView):
             game_id = self.request.session.pop('assigned_game_id')
             game = Game.objects.get(pk=game_id)
             game.participants.add(self.object.pk)
-            game.save()
+            game.save_m2m()
         # TODO здесь проверка соглашения об обработке ПД
 
         return super().form_valid(form)
@@ -53,7 +53,7 @@ class UserLoginView(LoginView):
             game_id = self.request.session.pop('assigned_game_id')
             game = Game.objects.get(pk=game_id)
             game.participants.add(self.request.user.pk)
-            game.save()
+            game.save_m2m()
         except KeyError:
             pass
         return reverse_lazy('profile', args=[self.request.user.id])
