@@ -68,18 +68,42 @@
   </div>
 </div>
 
+<!-- Advantages section -->
+<div class="container m-4" id="advantages">
+  </br>
+  <div class="row">
+      <div class="col-lg-4">
+        <img class="round" src="{% static 'templates/images/start_2.jpeg' %}" alt="create_game">
+
+        <h4>Создать игру легко и быстро</h4>
+        <p>Зарегистрируйтесь, нажмите пару кнопок для конфигурации игры - и рассылайте ссылки-приглашения друзьям</p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <img class="round" src="{% static 'templates/images/start_1.jpeg' %}" alt="wishes">
+        <h4>Спросим каждого про желания</h4>
+        <p>Каждый игрок сможет написать письмо Санте, а также отметить в списке желаний, какой подарок хочет получить</p>
+      </div><!-- /.col-lg-4 -->
+      <div class="col-lg-4">
+        <img class="round" src="{% static 'templates/images/start_3.jpeg' %}" alt="gifts">
+
+        <h4>Никто не уйдет без подарков</h4>
+        <p>Автоматическая жеребьевка с возможностью настроить пары-исключения проведен распределение участников по расписанию и вышлет уведомления</p>
+      </div><!-- /.col-lg-4 -->
+  </div>
+</div>
+
 <!-- FAQ section -->
-<div class="container m-4">
+<div class="container m-4" id="faq-section">
   <h4>Часто задаваемые вопросы:</h4>
   </br>
-  <div class="accordion" id="faqs">
+  <div class="accordion .accordion-flush" id="faqs">
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingOne">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-          Что это за игра?
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseTwo">
+          1. Что это за игра?
         </button>
       </h2>
-      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqs">
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqs">
         <div class="accordion-body">
           <p>«Тайный Санта», он же Secret Santa, — это способ дарить подарки анонимно, который отлично подходит для большого количества людей: ведь лучше потратить силы и ресурсы на хороший подарок кому-то одному, чем пытаться найти для всех приятные мелочи. Идея очень простая: в компании каждому достается один «подопечный», которому нужно придумать подарок, а сам даритель при этом остается тем самым «тайным Сантой» — от кого именно вы получите подарок, неизвестно до самого конца (возможно, это и вовсе останется тайной!).</p>
         </div>
@@ -88,7 +112,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingTwo">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Кто может играть?
+          2. Кто может играть?
         </button>
       </h2>
       <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqs">
@@ -101,7 +125,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header" id="headingThree">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Что подарить?
+          3. Что подарить?
         </button>
       </h2>
       <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqs">
