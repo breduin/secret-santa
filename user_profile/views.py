@@ -38,7 +38,7 @@ def serialize_game(game, user):
         'recipient': recipient_name,
         'description': game.description,
         'place': game.place,
-        'is_online': not game.place,
+        'is_online': game.is_online,
     }
          
 
