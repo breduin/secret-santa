@@ -7,13 +7,20 @@
 {% if user.is_authenticated %}
 
 <div class="d-flex justify-content-center carousel-item">
-    <img class="front-image" style="width: 20%;" src="{% static 'templates/images/santa-claus-gd9e32e908_640.jpg' %}">
-    <div class="container">
-      <div class="carousel-caption">
-        <p class='fs-1 text-dark bg-light text-wrap'>Отлично, Тайный Санта уже готовится к раздаче подарков!</p>
-        <p class='fs-3 text-dark bg-primary text-wrap'>ссылка для приглашения</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-4">
+        <img style="width: 80%;" src="{% static 'templates/images/santa-claus-gd9e32e908_640.jpg' %}">
+      </div> 
+      <div class="col text-center"> 
+        <h1>Отлично, Тайный Санта уже готовится к раздаче подарков!</h1>
+        </br>
+        <p><a href="#" class="link">ссылка для приглашения</a></p>
+        </br>
+        <img style="width: 20%;" src="{% static 'templates/images/gifts_under_tree.jpg' %}">
       </div>
     </div>
+  </div>  
 </div>
 
 {% else %}
