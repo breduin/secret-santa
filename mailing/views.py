@@ -11,7 +11,7 @@ SUBJECT_TEMPLATE = 'Результаты жеребьевки игры "Тайн
 
 
 def create_letter_text(pair):
-    if not pair.game.place:
+    if not pair.game.is_online:
         template_filename = 'toss_results_message_template_online.txt'
     else:
         template_filename = 'toss_results_message_template_offline.txt'
@@ -22,14 +22,17 @@ def create_letter_text(pair):
         text_template = file_obj.read()
 
     wishes = 'Список желаний пуст - положись на свою интуицию!'
-    # if pair.recipient.wishlist.exists():
-    #     wishes = '\n'.join([f'- {wish}' 
-    #                        for wish in pair.recipient.wishlist.all()])
-    #     wishes = f'Список желаний:\n{wishes}'
+    user_wishlists = pair.recipient.wishlists.filter(game=pair.game)
+    if user_wishlists.exists():
+        wishes = '\n'.join([f'- {wish}'
+                            for wish in user_wishlists[0].items.all()])
+        wishes = f'Список желаний:\n{wishes}'
+    
     santa_letter = 'Похоже получатель не написал письмо Санте :('
     if pair.recipient.letters_to_santa.exists():
         santa_letter = (pair.recipient.letters_to_santa
                         .order_by('-created_at').first())
+    
     return text_template.format(
         giver_name=pair.giver.first_name,
         game_name=pair.game.name,
