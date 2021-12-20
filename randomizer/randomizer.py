@@ -4,6 +4,7 @@ from games.models import Game, Pair
 from games.models import ElidiblePair
 from accounts.models import User
 
+
 def get_game_participants(game_id):
     participants = list(Game.objects.filter(pk=game_id, is_participants_shuffled=False)
                         .values_list('participants', flat=True))
