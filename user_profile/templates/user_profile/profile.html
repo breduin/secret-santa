@@ -80,9 +80,11 @@
       </h2>
     <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent="#show_last_games">
         <div class="accordion-body">
-          <div class="row m-2">
-            <a class="btn btn-outline-warning btn-sm mx-auto" href="{% url 'wishlist' game.id %}" role="button" style="max-width: 300px;">Мой список желаний</a>
-          </div>            
+          {% if game.is_participant %}
+            <div class="row m-2">
+              <a class="btn btn-outline-warning btn-sm mx-auto" href="{% url 'wishlist' game.id %}" role="button" style="max-width: 300px;">Мой список желаний</a>
+            </div>  
+          {% endif %}           
           {% if game.description %}
             <p>{{game.description}}</p>
           {% endif %}
@@ -153,9 +155,11 @@
         </h2>
       <div id="collapse-{{game.id}}" class="accordion-collapse collapse" aria-labelledby="heading-{{game.id}}" data-bs-parent="#show_last_games">
         <div class="accordion-body">
-          <div class="row m-2">
-            <a class="btn btn-outline-warning btn-sm mx-auto" href="{% url 'wishlist' game.id %}" role="button" style="max-width: 300px;">Мой список желаний</a>
-          </div>  
+          {% if game.is_participant %}
+            <div class="row m-2">
+              <a class="btn btn-outline-warning btn-sm mx-auto" href="{% url 'wishlist' game.id %}" role="button" style="max-width: 300px;">Мой список желаний</a>
+            </div>  
+          {% endif %}
             {% if game.description %}
               <p>{{game.description}}</p>
             {% endif %}
