@@ -59,6 +59,7 @@
 
 <div class="container m-2">
   <h4 class="text-center">Организуй тайный обмен подарками, запусти праздничное настроение!</h4>
+  </br>
   <div class="row">
     {% if user.is_authenticated %}
       <a class="btn btn-danger btn-lg" href="{% url 'create_game' %}" role="button">Начать игру</a>
@@ -76,7 +77,7 @@
         <img class="round" src="{% static 'templates/images/start_2.jpeg' %}" alt="create_game">
 
         <h4>Создать игру легко и быстро</h4>
-        <p>Зарегистрируйтесь, нажмите пару кнопок для конфигурации игры - и рассылайте ссылки-приглашения друзьям</p>
+        <p>Зарегистрируйтесь, нажмите пару кнопок для конфигурации игры, и рассылайте ссылки-приглашения друзьям</p>
       </div><!-- /.col-lg-4 -->
       <div class="col-lg-4">
         <img class="round" src="{% static 'templates/images/start_1.jpeg' %}" alt="wishes">
