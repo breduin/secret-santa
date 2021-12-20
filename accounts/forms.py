@@ -100,9 +100,49 @@ class UserPasswordResetForm(PasswordResetForm):
     pass
 
 
-class UserUpdateForm(GameUserCreateForm):
-    """
-    Form to update user profile data.
-    """
-    class Meta(GameUserCreateForm.Meta):
-        fields = GameUserCreateForm.Meta.fields
+class UserUpdateForm(forms.ModelForm):
+    required_css_class = 'fw-bold'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['username'].label = 'Логин'
+
+    class Meta:
+        model = User
+        fields = UserCreationForm.Meta.fields + ('email',
+                                                 'first_name',
+                                                 'last_name'
+                                                 )
+        widgets = {
+            'username': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'логин'
+                    }
+                    ),
+            'password2': forms.PasswordInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'пароль'
+                    }
+                    ),
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'pochta@primer.ru'
+                    }
+                    ),
+            'first_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Имя'
+                    }
+                    ),    
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Фамилия'
+                    }
+                    ),                                                
+        }
