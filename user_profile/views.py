@@ -13,6 +13,15 @@ def serialize_users(users):
     return ', '.join(user_names)
 
 
+def serialize_pairs(pairs):
+    pair_strings = [
+        (f'{pair.user_1.first_name} {pair.user_1.last_name} + '
+            f'{pair.user_2.first_name} {pair.user_2.last_name}')
+        for pair in pairs
+    ]
+    return ', '.join(pair_strings)
+
+
 def serialize_game(game, user):
     if game.pairs.filter(giver=user).exists():
         recipient = game.pairs.get(giver=user).recipient
@@ -25,6 +34,10 @@ def serialize_game(game, user):
         cost_limit = f'{game.your_gift_cost_limit} руб.'
     else:
         cost_limit = game.get_gift_cost_limit_display()
+
+    extra_pairs = 'не заданы'
+    if game.elidible_pairs.exists():
+        extra_pairs = serialize_pairs(game.elidible_pairs.all())
 
     return {
         'name': game.name,
@@ -44,6 +57,7 @@ def serialize_game(game, user):
         'description': game.description,
         'place': game.place,
         'is_online': game.is_online,
+        'extra_pairs': extra_pairs,
     }
          
 
