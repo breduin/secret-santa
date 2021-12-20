@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import get_object_or_404, render
 from games.models import Pair
 from randomizer.randomizer import shuffle_game_participants
@@ -52,10 +53,20 @@ def profile(request, profile_id):
         .prefetch_related('administrators') 
         .select_related('created_by')
     )
-    
+    last_games = (
+        user_games
+        .filter(gift_sending_deadline__lt=datetime.date.today())
+        .order_by('-gift_sending_deadline')
+    )
+    current_games = (
+        user_games
+        .filter(gift_sending_deadline__gte=datetime.date.today())
+        .order_by('-gift_sending_deadline')
+    ) 
     context = {
         'user': user,
-        'games': [serialize_game(game, user) for game in user_games],
+        'last_games': [serialize_game(game, user) for game in last_games],
+        'current_games': [serialize_game(game, user) for game in current_games],        
     }
 
     return render(request, 'user_profile/profile.html', context)
