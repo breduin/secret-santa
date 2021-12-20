@@ -20,6 +20,11 @@ def serialize_game(game, user):
                           f'({recipient.username})')
     else:
         recipient_name = None
+    
+    if game.gift_cost_limit == 'YOUR':
+        cost_limit = f'{game.your_gift_cost_limit} руб.'
+    else:
+        cost_limit = game.get_gift_cost_limit_display()
 
     return {
         'name': game.name,
@@ -30,7 +35,7 @@ def serialize_game(game, user):
         'participants_count': game.participants.count(),
         'id': game.id,
         'created_at': game.created_at,
-        'gift_cost_limit': game.get_gift_cost_limit_display(),
+        'gift_cost_limit': cost_limit,
         'registration_deadline': game.registration_deadline,
         'gift_sending_deadline': game.gift_sending_deadline,
         'participants': serialize_users(game.participants.all()),
