@@ -79,7 +79,7 @@ def mass_mailing(request, game_id):
                                   f'{count} писем')
     else:
         mailing_result_message = ('Не удалось выполнить рассылку писем '
-                                  f'участникам игры {game_id} выполнена')
+                                  f'участникам игры {game_id}')
 
     return HttpResponse(f'{mailing_result_message}')
 
