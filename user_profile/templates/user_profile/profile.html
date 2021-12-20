@@ -118,7 +118,7 @@
           <p>Стоимость подарка: {{game.gift_cost_limit}}</p>
           {% if game.is_admin or game.is_creator %}
             <p>Пары-исключения: {{game.extra_pairs}}</p>
-            <p>Ссылка для приглашения участников: {{ host_addr }}/joining_the_game/{{ game.id }}</p>
+            <p>Ссылка для приглашения участников: {{ host_addr }}/joining-the-game/{{ game.id }}</p>
             <div class="row m-2" id="test_buttons">    
               <a class="btn btn-outline-secondary mx-auto btn-sm" href="{% url 'toss' game.id %}" role="button" style="max-width: 250px;">Провести жеребьевку</a>
               <a class="btn btn-outline-secondary mx-auto btn-sm" href="{% url 'mass_mailing' game.id %}" role="button" style="max-width: 250px;">Разослать письма</a>

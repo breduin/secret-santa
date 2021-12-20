@@ -46,7 +46,7 @@ class CreateGameView(LoginRequiredMixin, CreateView):
         print(host_addr)
         # host = self.request.host
         game_id = game.pk
-        joining_url = f'{host_addr}/joining_the_game/{game_id}'
+        joining_url = f'{host_addr}/joining-the-game/{game_id}'
         return render(self.request, 'after_game_creation.html', context={'joining_url': joining_url})
         # return HttpResponseRedirect(self.get_success_url())
     
