@@ -26,11 +26,14 @@ class UserCreateView(CreateView):
         """If the form is valid, save the associated model."""
         self.object = form.save()
         # TODO здесь привязка пользователя к игре, если есть ссылка
-        if self.request.session['assigned_game_id']:
-            game_id = self.request.session.pop('assigned_game_id')
-            game = Game.objects.get(pk=game_id)
-            game.participants.add(self.object.pk)
-            game.save()
+        try:
+            if self.request.session['assigned_game_id']:
+                game_id = self.request.session.pop('assigned_game_id')
+                game = Game.objects.get(pk=game_id)
+                game.participants.add(self.object.pk)
+                game.save()
+        except KeyError:
+            pass
         # TODO здесь проверка соглашения об обработке ПД
 
         return super().form_valid(form)
