@@ -18,5 +18,5 @@ class Command(BaseCommand):
                 print(f'Game with id - {game} shuffled')
                 continue
             print(f"Can't shuffle game with id - {game}")
-    print('Shuffle complete')
+        print('Shuffle complete')
 
