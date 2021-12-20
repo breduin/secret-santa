@@ -71,7 +71,9 @@ def profile(request, profile_id):
     context = {
         'user': user,
         'last_games': [serialize_game(game, user) for game in last_games],
-        'current_games': [serialize_game(game, user) for game in current_games],        
+        'current_games': [serialize_game(game, user) for game in current_games],    
+        # TODO: вставить ссылку для регистрации участников на игру
+        'register_link': 'http://что-то там'     
     }
 
     return render(request, 'user_profile/profile.html', context)
