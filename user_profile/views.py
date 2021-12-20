@@ -63,7 +63,8 @@ def serialize_game(game, user):
 
 def profile(request, profile_id):
     user = get_object_or_404(User, id=profile_id)
-    
+    host_addr = request._current_scheme_host
+
     user_games = (
         Game.objects
         .filter(Q(created_by=user) | Q(administrators=user) | Q(participants=user))
@@ -87,7 +88,7 @@ def profile(request, profile_id):
         'last_games': [serialize_game(game, user) for game in last_games],
         'current_games': [serialize_game(game, user) for game in current_games],    
         # TODO: вставить ссылку для регистрации участников на игру
-        'register_link': 'http://что-то там'     
+        'host_addr': host_addr
     }
 
     return render(request, 'user_profile/profile.html', context)
