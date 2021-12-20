@@ -119,6 +119,7 @@
               <a class="btn btn-outline-secondary mx-auto btn-sm" href="{% url 'toss' game.id %}" role="button" style="max-width: 250px;">Провести жеребьевку</a>
               <a class="btn btn-outline-secondary mx-auto btn-sm" href="{% url 'mass_mailing' game.id %}" role="button" style="max-width: 250px;">Разослать письма</a>
             </div>
+            <p>Ссылка для регистрации в игре - {{ host_addr }}/joining_the_game/{{ game.id }}</p>
           {% endif %}
         </div>
       </div>

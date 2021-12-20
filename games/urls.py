@@ -1,11 +1,12 @@
 """Games app URL Configuration."""
 from django.urls import path
-from .views import MainPageView
+from .views import MainPageView,CreateUpdateWishListView
 from .views import CreateGameView
 from .views import UpdateGameView
 from .views import get_error_page
 from .views import AfterGameCreationView
-from .views import CreateUpdateWishListView
+from .views import joining_the_game
+
 
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('error/<int:error_code>', get_error_page, name='error'),
     path('after-game-creation/', AfterGameCreationView.as_view(), name='after_game_creation'),
     path('wishlist/<int:game_id>', CreateUpdateWishListView.as_view(), name='wishlist'),
+    path('joining-the-game/<int:game_id>', joining_the_game, name='joining-the-game'),
 ]

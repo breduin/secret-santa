@@ -1,10 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.http import Http404
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 
+from accounts.views import UserLoginView
 from .forms import GameCreateForm
 from .forms import GameUpdateForm
 from .forms import WishListCreateForm
@@ -40,7 +42,13 @@ class CreateGameView(LoginRequiredMixin, CreateView):
             game.participants.add(user)
             game.administrators.add(user)
             game.save()
-        return HttpResponseRedirect(self.get_success_url())
+        host_addr = self.request._current_scheme_host
+        print(host_addr)
+        # host = self.request.host
+        game_id = game.pk
+        joining_url = f'{host_addr}/joining_the_game/{game_id}'
+        return render(self.request, 'after_game_creation.html', context={'joining_url': joining_url})
+        # return HttpResponseRedirect(self.get_success_url())
     
 
 class UpdateGameView(LoginRequiredMixin, UpdateView):
@@ -103,13 +111,24 @@ class AfterGameCreationView(TemplateView):
     template_name = "after_game_creation.html"
 
 
+def joining_the_game(request, game_id):
+    """Страница для присоединения к игре"""
+    try:
+        game = Game.objects.get(pk=game_id)
+    except Exception:
+        raise Http404("Игра не найдена.")
+
+    request.session['assigned_game_id'] = game_id
+    return UserLoginView.as_view()(request)
+
+
 class CreateUpdateWishListView(LoginRequiredMixin, UpdateView):
     """Создать список желаний."""
     login_url = reverse_lazy('login')
     template_name = 'wishlist.html'
     form_class = WishListCreateForm
 
-    def get_object(self):        
+    def get_object(self):
         user = self.request.user
         try:
             game_id = self.kwargs['game_id']
